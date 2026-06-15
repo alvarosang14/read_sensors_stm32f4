@@ -301,7 +301,7 @@ HAL_StatusTypeDef USB_DevInit(USB_OTG_GlobalTypeDef *USBx,
         USBx->GCCFG |= USB_OTG_GCCFG_VBUSBSEN;
     }
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) \
-          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                   \
+          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                                                       \
           defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) \
           || defined(STM32F423xx) */
 
@@ -1344,7 +1344,7 @@ HAL_StatusTypeDef USB_HostInit(USB_OTG_GlobalTypeDef *USBx,
     USBx->GCCFG &= ~USB_OTG_GCCFG_VBUSBSEN;
     USBx->GCCFG &= ~USB_OTG_GCCFG_VBUSASEN;
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) \
-          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                   \
+          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                                                       \
           defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) \
           || defined(STM32F423xx) */
 #if defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) ||    \
@@ -1352,7 +1352,7 @@ HAL_StatusTypeDef USB_HostInit(USB_OTG_GlobalTypeDef *USBx,
     /* Disable Battery chargin detector */
     USBx->GCCFG &= ~(USB_OTG_GCCFG_BCDEN);
 #endif /* defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) \
-          || defined(STM32F412Cx) || defined(STM32F413xx) ||                   \
+          || defined(STM32F412Cx) || defined(STM32F413xx) ||                               \
           defined(STM32F423xx) */
 
     if ((USBx->GUSBCFG & USB_OTG_GUSBCFG_PHYSEL) == 0U) {

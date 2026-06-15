@@ -149,7 +149,7 @@ HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd) {
     return HAL_OK;
 }
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) \
-          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                   \
+          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                                                       \
           defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) \
           || defined(STM32F423xx) */
 #if defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) ||    \
@@ -277,7 +277,7 @@ HAL_StatusTypeDef HAL_PCDEx_DeActivateBCD(PCD_HandleTypeDef *hpcd) {
     return HAL_OK;
 }
 #endif /* defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) \
-          || defined(STM32F412Cx) || defined(STM32F413xx) ||                   \
+          || defined(STM32F412Cx) || defined(STM32F413xx) ||                               \
           defined(STM32F423xx) */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 

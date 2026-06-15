@@ -79,11 +79,11 @@ extern "C" {
 #else
 #define PWR_REGULATOR_VOLTAGE_SCALE1                                           \
     PWR_CR_VOS /* Scale 1 mode(default value at reset): the maximum value of   \
-                  fHCLK is 168 MHz. It can be extended to 180 MHz by           \
+                  fHCLK is 168 MHz. It can be extended to 180 MHz by                                                                    \
                   activating the over-drive mode. */
 #define PWR_REGULATOR_VOLTAGE_SCALE2                                           \
     PWR_CR_VOS_1 /* Scale 2 mode: the maximum value of fHCLK is 144 MHz. It    \
-                    can be extended to 168 MHz by activating the over-drive    \
+                    can be extended to 168 MHz by activating the over-drive                                          \
                     mode. */
 #define PWR_REGULATOR_VOLTAGE_SCALE3                                           \
     PWR_CR_VOS_0 /* Scale 3 mode: the maximum value of fHCLK is 120 MHz. */
@@ -104,7 +104,7 @@ extern "C" {
     defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx)
 #define PWR_WAKEUP_PIN3 0x00000040U
 #endif /* STM32F410xx || STM32F412Zx || STM32F412Vx || STM32F412Rx ||          \
-          STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx ||          \
+          STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx ||                                                 \
           STM32F413xx || STM32F423xx */
 /**
  * @}
@@ -245,7 +245,7 @@ void HAL_PWREx_DisableMainRegulatorLowVoltage(void);
 void HAL_PWREx_EnableLowRegulatorLowVoltage(void);
 void HAL_PWREx_DisableLowRegulatorLowVoltage(void);
 #endif /* STM32F410xx || STM32F401xC || STM32F401xE || STM32F411xE ||          \
-          STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx ||          \
+          STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx ||                                                 \
           STM32F413xx || STM32F423xx */
 
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) ||    \

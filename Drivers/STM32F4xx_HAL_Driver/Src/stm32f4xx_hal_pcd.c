@@ -239,7 +239,7 @@ HAL_StatusTypeDef HAL_PCD_Init(PCD_HandleTypeDef *hpcd) {
         (void)HAL_PCDEx_ActivateLPM(hpcd);
     }
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) \
-          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                   \
+          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                                                       \
           defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) \
           || defined(STM32F423xx) */
     (void)USB_DevDisconnect(hpcd->Instance);
@@ -1278,7 +1278,7 @@ void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd) {
             }
         }
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) \
-          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                   \
+          || defined(STM32F412Zx) || defined(STM32F412Vx) ||                                                       \
           defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) \
           || defined(STM32F423xx) */
         /* Handle Reset Interrupt */
