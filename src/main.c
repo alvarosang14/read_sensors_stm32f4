@@ -1,6 +1,7 @@
 #include "main.h"
 #include "adc.h"
 #include "gpio.h"
+#include "i2c.h"
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 
@@ -29,6 +30,7 @@ int main(void) {
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_ADC1_Init();
+    MX_I2C1_Init();
     MX_USB_DEVICE_Init();
 
     uint32_t valor_adc;
