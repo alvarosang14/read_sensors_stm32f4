@@ -1,0 +1,5 @@
+[submodule "submodule/BNO055"]
+	path = submodule/BNO055
+	url = https://github.com/boschsensortec/BNO055_SensorAPI
+    branch = bno055_v2.0.6
+    
