@@ -47,12 +47,15 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/main.c
     ${CMAKE_SOURCE_DIR}/src/send_info/send_info.c
     ${CMAKE_SOURCE_DIR}/src/utils/utils.c
+    ${CMAKE_SOURCE_DIR}/src/bno055_wrapper/bno055_wrapper.c
+    ${CMAKE_SOURCE_DIR}/submodule/BNO055/bno055.c
     # Add user sources here
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/submodule/
     # Add user defined include paths
 )
 
@@ -67,6 +70,5 @@ list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
-
     # Add user defined libraries
 )
