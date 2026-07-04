@@ -39,7 +39,8 @@ int main(void) {
     char msg[32];
 
     /* Infinite loop */
-    while (1) {
+    int loop = 1;
+    while (loop) {
         HAL_ADC_Start(&hadc1);
         HAL_ADC_PollForConversion(&hadc1, 100);
         valor_adc = HAL_ADC_GetValue(&hadc1);
@@ -48,7 +49,21 @@ int main(void) {
         snprintf(msg, sizeof(msg), "Hola mundo: %lu\r\n", valor_adc);
         CDC_Transmit_FS((uint8_t *)msg, (uint16_t)strlen(msg));
 
-        bno055_read();
+        struct bno055_accel_t accel_out;
+        struct bno055_gyro_t gyro_out;
+        s32 err = bno055_read(&accel_out, &gyro_out);
+        if (err != BNO055_SUCCESS) {
+            loop = 0;
+            break;
+        }
+
+        snprintf(msg, sizeof(msg), "Accel: x=%d y=%d z=%d\r\n", accel_out.x,
+                 accel_out.y, accel_out.z);
+        CDC_Transmit_FS((uint8_t *)msg, (uint16_t)strlen(msg));
+
+        snprintf(msg, sizeof(msg), "Grio: x=%d y=%d z=%d\r\n", gyro_out.x,
+                 gyro_out.y, gyro_out.z);
+        CDC_Transmit_FS((uint8_t *)msg, (uint16_t)strlen(msg));
 
         sleep(1);
     }

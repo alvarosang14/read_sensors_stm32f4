@@ -1,9 +1,17 @@
+// bno055_wrapper.h
 #ifndef BNO055_WRAPPER_H
 #define BNO055_WRAPPER_H
 
-void bno055_init_a();
-void bno055_read();
-void bno055_convert();
-void bno055_stop();
+#include "BNO055/bno055.h"
 
-#endif // BNO055_WRAPPER_H
+s32 bno055_init_a(void);
+
+s32 bno055_read(struct bno055_accel_t *accel_out,
+                struct bno055_gyro_t *gyro_out);
+
+s32 bno055_convert_double(struct bno055_accel_double_t *accel_out,
+                          struct bno055_gyro_double_t *gyro_out);
+
+s32 bno055_stop(void);
+
+#endif
