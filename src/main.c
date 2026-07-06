@@ -3,12 +3,12 @@
 #include "bno055_wrapper/bno055_wrapper.h"
 #include "gpio.h"
 #include "i2c.h"
+#include "read_adc/read_adc.h"
+#include "send_info/send_info.h"
 #include "usb_device.h"
-#include "usbd_cdc_if.h"
 #include "utils/utils.h"
 
 #include <stdint.h>
-#include <string.h>
 #include <sys/_intsup.h>
 
 /**
@@ -17,10 +17,7 @@
  */
 extern void SystemClock_Config(void);
 
-int main(void) {
-    /* MCU
-     * Configuration--------------------------------------------------------*/
-
+static void init_stm32() {
     /* Reset of all peripherals, Initializes the Flash interface and the
      * Systick. */
     HAL_Init();
@@ -34,39 +31,39 @@ int main(void) {
     MX_I2C1_Init();
     MX_USB_DEVICE_Init();
     bno055_init_a();
+}
 
-    uint32_t valor_adc;
-    char msg[32];
+static void stop_stm32() { bno055_stop(); }
+
+int main(void) {
+    init_stm32();
+
+    char msg[128];
+    uint32_t adc_value = 0;
+    struct bno055_accel_t accel_out;
+    struct bno055_gyro_t gyro_out;
+    s32 err;
 
     /* Infinite loop */
     int loop = 1;
     while (loop) {
-        HAL_ADC_Start(&hadc1);
-        HAL_ADC_PollForConversion(&hadc1, 100);
-        valor_adc = HAL_ADC_GetValue(&hadc1);
-        HAL_ADC_Stop(&hadc1);
+        adc_value = read_data_adc();
 
-        snprintf(msg, sizeof(msg), "Hola mundo: %lu\r\n", valor_adc);
-        CDC_Transmit_FS((uint8_t *)msg, (uint16_t)strlen(msg));
-
-        struct bno055_accel_t accel_out;
-        struct bno055_gyro_t gyro_out;
-        s32 err = bno055_read(&accel_out, &gyro_out);
+        err = bno055_read(&accel_out, &gyro_out);
         if (err != BNO055_SUCCESS) {
             loop = 0;
             break;
         }
 
-        snprintf(msg, sizeof(msg), "Accel: x=%d y=%d z=%d\r\n", accel_out.x,
-                 accel_out.y, accel_out.z);
-        CDC_Transmit_FS((uint8_t *)msg, (uint16_t)strlen(msg));
-
-        snprintf(msg, sizeof(msg), "Grio: x=%d y=%d z=%d\r\n", gyro_out.x,
+        snprintf(msg, sizeof(msg),
+                 "{\"adc\":%lu,\"accel\":{\"x\":%d,\"y\":%d,\"z\":%d},"
+                 "\"gyro\":{\"x\":%d,\"y\":%d,\"z\":%d}}\r\n",
+                 adc_value, accel_out.x, accel_out.y, accel_out.z, gyro_out.x,
                  gyro_out.y, gyro_out.z);
-        CDC_Transmit_FS((uint8_t *)msg, (uint16_t)strlen(msg));
 
-        sleep(1);
+        send_info(msg);
+
+        sleep(500);
     }
-
-    bno055_stop();
+    stop_stm32();
 }

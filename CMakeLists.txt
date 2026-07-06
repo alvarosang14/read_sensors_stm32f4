@@ -48,6 +48,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/send_info/send_info.c
     ${CMAKE_SOURCE_DIR}/src/utils/utils.c
     ${CMAKE_SOURCE_DIR}/src/bno055_wrapper/bno055_wrapper.c
+    ${CMAKE_SOURCE_DIR}/src/read_adc/read_adc.c
     ${CMAKE_SOURCE_DIR}/submodule/BNO055/bno055.c
     # Add user sources here
 )
