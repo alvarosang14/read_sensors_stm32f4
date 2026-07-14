@@ -9,6 +9,7 @@
 #include "utils/utils.h"
 
 #include <stdint.h>
+#include <stdio.h>
 #include <sys/_intsup.h>
 
 /**
@@ -47,10 +48,14 @@ int main(void) {
     /* Infinite loop */
     int loop = 1;
     while (loop) {
+        // PA1
         adc_value = read_data_adc();
 
+        // SDA=PB7 SCL=PB6
         err = bno055_read(&accel_out, &gyro_out);
         if (err != BNO055_SUCCESS) {
+            snprintf(msg, sizeof(msg), "Error in BNO055");
+            send_info(msg);
             loop = 0;
             break;
         }
