@@ -3,3 +3,7 @@
 	url = https://github.com/boschsensortec/BNO055_SensorAPI
     branch = bno055_v2.0.6
     
+[submodule "submodule/KalmanFilter"]
+	path = submodule/KalmanFilter
+	url = https://github.com/TKJElectronics/KalmanFilter.git
+	branch = 1.0.2

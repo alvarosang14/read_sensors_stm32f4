@@ -10,7 +10,6 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <sys/_intsup.h>
 
 /**
  * @brief System Clock Configuration
@@ -43,7 +42,9 @@ int main(void) {
     uint32_t adc_value = 0;
     struct bno055_accel_t accel_out;
     struct bno055_gyro_t gyro_out;
+    struct bno055_euler_t euler;
     s32 err;
+    s8 err2;
 
     /* Infinite loop */
     int loop = 1;
@@ -53,7 +54,8 @@ int main(void) {
 
         // SDA=PB7 SCL=PB6
         err = bno055_read(&accel_out, &gyro_out);
-        if (err != BNO055_SUCCESS) {
+        err2 = bno055_read_euler(&euler);
+        if (err != BNO055_SUCCESS || err2 != BNO055_SUCCESS) {
             snprintf(msg, sizeof(msg), "Error in BNO055");
             send_info(msg);
             loop = 0;
@@ -61,10 +63,12 @@ int main(void) {
         }
 
         snprintf(msg, sizeof(msg),
-                 "{\"adc\":%lu,\"accel\":{\"x\":%d,\"y\":%d,\"z\":%d},"
+                 "{\"adc\":%lu,"
+                 "\"euler\":{\"h\":%d, \"p\":%d, \"y\":%d},"
+                 "\"accel\":{\"x\":%d,\"y\":%d,\"z\":%d},"
                  "\"gyro\":{\"x\":%d,\"y\":%d,\"z\":%d}}\r\n",
-                 adc_value, accel_out.x, accel_out.y, accel_out.z, gyro_out.x,
-                 gyro_out.y, gyro_out.z);
+                 adc_value, euler.h, euler.p, euler.r, accel_out.x, accel_out.y,
+                 accel_out.z, gyro_out.x, gyro_out.y, gyro_out.z);
 
         send_info(msg);
 

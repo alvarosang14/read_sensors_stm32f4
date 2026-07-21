@@ -1,4 +1,5 @@
 #include "bno055_wrapper/bno055_wrapper.h"
+#include "BNO055/bno055.h"
 #include "i2c.h"
 
 #define BNO055_I2C_TIMEOUT_MS 100
@@ -34,6 +35,24 @@ static s8 BNO055_I2C_bus_read(u8 dev_addr, u8 reg_addr, u8 *reg_data, u8 len) {
 
 static void BNO055_delay_msec(u32 msec) { HAL_Delay(msec); }
 
+static struct bno055_accel_t accel_init;
+static struct bno055_gyro_t gyro_init;
+static struct bno055_euler_t euler_init;
+
+// Lectura cruda, sin restar nada — la usa struct_init() y bno055_read()
+static s32 bno055_read_raw(struct bno055_accel_t *accel_out,
+                           struct bno055_gyro_t *gyro_out) {
+    s32 comres = BNO055_SUCCESS;
+    comres += bno055_read_accel_xyz(accel_out);
+    comres += bno055_read_gyro_xyz(gyro_out);
+    return comres;
+}
+
+void struct_init(void) {
+    bno055_read_raw(&accel_init, &gyro_init);
+    bno055_read_euler_hrp(&euler_init); // raw también, sin restar
+}
+
 s32 bno055_init_a(void) {
     s32 comres = BNO055_ERROR;
 
@@ -50,6 +69,7 @@ s32 bno055_init_a(void) {
     // Inertial measurement unit.
     // Reads accel,gyro and fusion data
     comres += bno055_set_operation_mode(BNO055_OPERATION_MODE_IMUPLUS);
+    comres += bno055_set_euler_unit(BNO055_EULER_UNIT_DEG);
 
     return comres;
 }
@@ -68,6 +88,14 @@ s32 bno055_read(struct bno055_accel_t *accel_out,
      * register - 0x14 to 0x19*/
     comres += bno055_read_gyro_xyz(gyro_out);
 
+    gyro_out->x = gyro_out->x - gyro_init.x;
+    gyro_out->y = gyro_out->y - gyro_init.y;
+    gyro_out->z = gyro_out->z - gyro_init.z;
+
+    accel_out->x = accel_out->x - accel_init.x;
+    accel_out->y = accel_out->y - accel_init.y;
+    accel_out->z = accel_out->z - accel_init.z;
+
     return comres;
 }
 
@@ -82,6 +110,16 @@ s32 bno055_convert_double(struct bno055_accel_double_t *accel_out,
     /*  API used to read gyro data output as double  - dps and rps
      * float functions also available in the BNO055 API */
     comres += bno055_convert_double_gyro_xyz_dps(gyro_out);
+
+    return comres;
+}
+BNO055_RETURN_FUNCTION_TYPE bno055_read_euler(struct bno055_euler_t *euler) {
+    BNO055_RETURN_FUNCTION_TYPE comres = BNO055_SUCCESS;
+    comres += bno055_read_euler_hrp(euler);
+
+    euler->h = euler->h - euler_init.h;
+    euler->p = euler->p - euler_init.p;
+    euler->r = euler->r - euler_init.r;
 
     return comres;
 }

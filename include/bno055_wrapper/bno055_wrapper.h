@@ -12,6 +12,8 @@ s32 bno055_read(struct bno055_accel_t *accel_out,
 s32 bno055_convert_double(struct bno055_accel_double_t *accel_out,
                           struct bno055_gyro_double_t *gyro_out);
 
+BNO055_RETURN_FUNCTION_TYPE bno055_read_euler(struct bno055_euler_t *euler);
+
 s32 bno055_stop(void);
 
 #endif
