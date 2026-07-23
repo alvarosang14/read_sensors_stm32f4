@@ -1,6 +1,8 @@
 #include "main.h"
+
 #include "adc.h"
 #include "bno055_wrapper/bno055_wrapper.h"
+#include "cmsis_os.h"
 #include "gpio.h"
 #include "i2c.h"
 #include "read_adc/read_adc.h"
@@ -15,7 +17,9 @@
  * @brief System Clock Configuration
  * @retval None
  */
+// Extern not is neccesary
 extern void SystemClock_Config(void);
+extern void MX_FREERTOS_Init(void);
 
 static void init_stm32() {
     /* Reset of all peripherals, Initializes the Flash interface and the
@@ -31,6 +35,14 @@ static void init_stm32() {
     MX_I2C1_Init();
     MX_USB_DEVICE_Init();
     bno055_init_a();
+
+    /* Init scheduler */
+    osKernelInitialize(); /* Call init function for freertos objects (in
+                             cmsis_os2.c) */
+    MX_FREERTOS_Init();
+
+    /* Start scheduler */
+    osKernelStart();
 }
 
 static void stop_stm32() { bno055_stop(); }
